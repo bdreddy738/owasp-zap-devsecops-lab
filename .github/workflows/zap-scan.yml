@@ -1,4 +1,4 @@
-name: OWASP ZAP DAST Scan
+name: OWASP ZAP DAST Scan v1
 
 on:
   workflow_dispatch:
