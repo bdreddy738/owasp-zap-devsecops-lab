@@ -1,6 +1,10 @@
 name: OWASP ZAP DAST Scan v1
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
 
 jobs:
@@ -14,7 +18,7 @@ jobs:
       - name: OWASP ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          target: 'http://54.92.155.35:3000'
+          target: "http://54.92.155.35:3000"
           fail_action: false
 
       - name: Upload ZAP Report
