@@ -345,3 +345,32 @@ Production Deployment
 
 
 git add README.md && git commit -m "Add project documentation" && git push origin main
+=============================================================================
+
+
+Q: What is DAST?
+
+Answer:
+
+DAST (Dynamic Application Security Testing) scans a running application from outside, similar to an attacker, to identify vulnerabilities such as XSS, SQL Injection, insecure headers, information disclosure, and authentication issues.
+
+Q: Why use OWASP ZAP?
+
+Answer:
+
+OWASP ZAP is an open-source DAST tool used to automatically discover and report web application security vulnerabilities during CI/CD pipelines.
+
+
+Q: Difference between SAST and DAST?
+SAST	               DAST
+Scans                 Source Code	Scans Running Application
+Before Deployment	     After Deployment
+White Box Testing	      Black Box Testing
+SonarQube, Checkmarx	    OWASP ZAP, Burp Suite
+
+Q: Why upload report as artifact?
+
+Answer:
+
+Artifacts preserve scan reports after pipeline completion, allowing developers and security teams to download, review, audit, and remediate identified vulnerabilities.
+

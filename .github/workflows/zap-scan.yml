@@ -1,33 +1,76 @@
+# Workflow Name
+# GitHub Actions UI లో ఈ పేరుతో కనిపిస్తుంది
 name: OWASP ZAP DAST Scan
 
+# Workflow ఎప్పుడు trigger అవ్వాలి
 on:
+
+  # main branch కి code push చేసినప్పుడు run అవుతుంది
   push:
     branches:
       - main
 
+  # GitHub UI నుండి manually run చేయడానికి
   workflow_dispatch:
 
+# Runner కి repository read permission మాత్రమే ఇవ్వడం
 permissions:
   contents: read
 
+# Jobs section
 jobs:
+
+  # Job Name
   zap_scan:
+
+    # GitHub managed Ubuntu VM create అవుతుంది
     runs-on: ubuntu-latest
 
     steps:
+
+      # Repository code runner లోకి download అవుతుంది
+      # Backend లో almost git clone లాగా పని చేస్తుంది
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      # OWASP ZAP Security Scan Step ప్రారంభం and 
       - name: Run OWASP ZAP Baseline Scan
+
+        # అంటే GitHub Runner లో OWASP ZAP tool ని automatically download చేసి, start చేసి, target application మీద security scan run చేయమని చెప్పడం.
         uses: zaproxy/action-baseline@v0.14.0
+
         with:
-          target: "http://54.92.155.35:3000"
+
+          # Scan చేయాల్సిన target application URL
+          target: "http://98.82.164.80:3000/"
+
+          # Vulnerabilities కనిపించినా
+          # Pipeline fail అవ్వకూడదు
           fail_action: false
+
+          # Vulnerabilities కోసం
+          # GitHub Issues create చేయవద్దు
           allow_issue_writing: false
+
+          # OWASP ZAP కి అదనపు command-line options పంపడానికి ఉపయోగిస్తాం
+          # "-a" అంటే Alpha Rules Enable
+          # Alpha Rules అనేవి experimental/additional security checks
+          # Default Baseline Scan కంటే ఎక్కువ vulnerabilities detect చేసే అవకాశం ఉంటుంది
+          # Missing Security Headers, Cookie Issues, Information Disclosure,
+          # Security Misconfigurations వంటి అదనపు checks run అవుతాయి
+          # Scan coverage పెరుగుతుంది కానీ scan time కొంచెం ఎక్కువ కావచ్చు
           cmd_options: "-a"
 
+      # Generated HTML report upload
       - name: Upload ZAP HTML Report
+
+        # Report ని GitHub Artifacts లో store చేస్తుంది
         uses: actions/upload-artifact@v4
+
         with:
+
+          # Artifact Name
           name: zap-html-report
+
+          # Upload చేయాల్సిన report file
           path: report_html.html
